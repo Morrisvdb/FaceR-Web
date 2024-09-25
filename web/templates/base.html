@@ -1,0 +1,13 @@
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}">
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('video') }}">Video</a>
+        <a href="{{ url_for('image') }}">Image</a>
+        <a href="{{ url_for('upload') }}">Upload</a>
+    </div>
+    {% block content %}{% endblock %}
+</body>

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="{{ url_for('static', filename='video.js') }}"></script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Video Stream</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="video-container">
+                <video src="" autoplay id="video"></video>
+            </div>
+            <div class="chart-container">
+                <canvas id="confidenceChart"></canvas>
+                <footer>
+                    <p id="predicted">Predicted Class: N/A</p>
+                    <p id="predicted-confidence">Confidence: N/A</p>
+                </footer>
+            </div>
+        </div>
+    </body>
+    </html>
+{% endblock %}
