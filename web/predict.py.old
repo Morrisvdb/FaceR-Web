@@ -1,10 +1,12 @@
+# OLD VERSION
+# COMPATIBLE WITH YOLOv3
+
 import cv2
 import numpy as np
 import os
 import datetime
 import uuid
 from ultralytics import YOLO
-import time
 
 def load_yolo_model(model_path):
     if not os.path.exists(model_path):
@@ -60,18 +62,29 @@ def create_unique_filename(extension=".jpg"):
     return filename
 
 def predict(image):
-    model_path = './Models/YOLOv8/yolov8x.pt'  # Path to your YOLOv8 model
+    model_path = 'yolov8n.pt'  # Path to your YOLOv8 model
+    filename = "./temp/" + create_unique_filename()
+    if not os.path.exists("./temp"):
+        os.makedirs("./temp")
+    image.save(filename)
+    image = cv2.imread(filename)
+    os.remove(filename)
 
     model = load_yolo_model(model_path)
     
-    filename = create_unique_filename()
-    
-    image.save(f"./temp/{filename}")
-    image = cv2.imread(f"./temp/{filename}")
-    
-    stime = time.time()
     image, results = classify_objects(image, model)
-    ttime = time.time() - stime
     
-    os.remove(f"./temp/{filename}")
-    return image, results, ttime
+    return image, results
+
+def cleanup():
+    if len(os.listdir("./temp")) > 5:
+        for file in os.listdir("./temp"):
+            os.remove(f"./temp/{file}")
+
+# Demo:
+
+image = cv2.imread('webcam_frame.jpg')
+image, results = predict(image)
+cv2.imshow('Image with Bounding Boxes', image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()

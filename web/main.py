@@ -29,9 +29,10 @@ def post_frame():
 
     frame = request.files['frame']
     
-    predictions = predict(frame)
+    image, predictions, ttime = predict(frame)
+    print(predictions)
     predicts = []
-    for prediction in predictions[-1:][0]:
+    for prediction in predictions:
         predicts.append(
             {
                 "class": prediction['class'],
@@ -39,12 +40,19 @@ def post_frame():
                 "box": prediction['box']
             }
         )
-    return jsonify(predicts)    
+    # predicts.append(
+    #     {
+    #         "time": ttime
+    #     }
+    # )
+    return jsonify(predicts)
 
-[{'class': 'person', 'confidence': 0.9668554663658142, 'box': [481, 339, 89, 112]}, 
- {'class': 'person', 'confidence': 0.9501999020576477, 'box': [175, 198, 283, 283]}, 
- {'class': 'person', 'confidence': 0.6560819745063782, 'box': [174, 314, 65, 127]}]
 
+
+[
+    {'class': 'person', 'confidence': 0.6562302112579346, 'box': [93, 1, 544, 276]}, 
+    {'class': 'person', 'confidence': 0.6224901676177979, 'box': [1, 260, 251, 219]}
+    ]
 
 @app.route('/image')
 def image():

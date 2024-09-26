@@ -1,3 +1,12 @@
+# YOLOv3
 wget https://pjreddie.com/media/files/yolov3.weights
 wget https://raw.githubusercontent.com/pjreddie/darknet/master/cfg/yolov3.cfg
 wget https://raw.githubusercontent.com/pjreddie/darknet/master/data/coco.names
+
+
+# YOLOv8
+wget https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8n.pt
+wget https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8s.pt
+wget https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8m.pt
+wget https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8l.pt
+wget https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8x.pt

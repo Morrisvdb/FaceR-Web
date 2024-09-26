@@ -64,6 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 updateChart(data);
                 console.log('Success:', data);
+                // const time = data.pop();
+                // console.log('Last item:', lastItem);
                 progressText.innerHTML = '<i class="fa-solid fa-check-double"></i> Done!';
             })
             .catch(error => {
