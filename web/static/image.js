@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = document.getElementById('confidenceChart').getContext('2d');
     const progressText = document.getElementById('progressText');
     const shutterButton = document.getElementById('shutterButton');
+    const predictedClassField = document.getElementById('predicted');
+    const predictedConfidenceField = document.getElementById('predicted-confidence');
+    let state = "ready";  // Changed to let for state modification
     const confidenceChart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -43,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function sendFrame() {
         // Pause the video feed
         video.pause();
+        state = "processing";
         progressText.innerHTML = '<i class="fa-solid fa-spinner"></i> Loading...';
         shutterButton.innerHTML = '<i class="fa-solid fa-trash"></i>';
 
@@ -64,22 +68,27 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 updateChart(data);
                 console.log('Success:', data);
-                // const time = data.pop();
-                // console.log('Last item:', lastItem);
                 progressText.innerHTML = '<i class="fa-solid fa-check-double"></i> Done!';
+                state = "ready";
             })
             .catch(error => {
                 console.error('Error:', error);
                 // Resume the video feed in case of error
                 video.play();
+                state = "ready";
             });
         }, 'image/png');
     }
 
     function clear() {
+        if (state === "processing") {
+            return;  // Do not clear if still processing
+        }
         confidenceChart.data.labels = [];
         confidenceChart.data.datasets[0].data = [];
         confidenceChart.update();
+        predictedClassField.innerHTML = "Predicted Class: N/A";
+        predictedConfidenceField.innerHTML = "Confidence: N/A";
         const boxCanvas = document.getElementById('boxCanvas');
         if (boxCanvas) {
             boxCanvas.remove();
@@ -120,6 +129,11 @@ document.addEventListener('DOMContentLoaded', () => {
             boxContext.fillText(prediction['confidence'].toFixed(2), x+5,y + 30);
         });
 
+        const predictedClass = predictions[0]['class'];
+        const predictedConfidence = predictions[0]['confidence'] * 100;
+        
+        predictedClassField.innerHTML = "Predicted Class: " + predictedClass;
+        predictedConfidenceField.innerHTML = "Confidence: " + predictedConfidence.toFixed(2) + "%";
     }
 
     // Add an event listener to the button
@@ -133,6 +147,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     );
+
+    document.addEventListener('keydown', (event) => {
+        if (event.code === 'Space') {
+            if (video.paused) {
+                clear();
+            } else {
+                sendFrame();
+            }
+        }
+    });
 
     clear();
 });

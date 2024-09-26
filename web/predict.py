@@ -68,6 +68,7 @@ def predict(image):
     
     image.save(f"./temp/{filename}")
     image = cv2.imread(f"./temp/{filename}")
+    image = cv2.flip(image, 1)
     
     stime = time.time()
     image, results = classify_objects(image, model)
