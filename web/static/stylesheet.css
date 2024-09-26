@@ -56,10 +56,10 @@ footer {
 
 .navbar a {
     float: left;
-    font-size: 20px;
+    font-size: large;
     color: white;
     text-align: center;
-    padding: 20px;
+    padding: 1vmax;
     text-decoration: none;
     font-weight: bold;
     color: rgb(10, 10, 10);
@@ -84,4 +84,30 @@ footer {
     transform: rotateY(180deg);
     -webkit-transform:rotateY(180deg); /* Safari and Chrome */
     -moz-transform:rotateY(180deg); /* Firefox */
+}
+
+#loading {
+    display: none;
+    font-size: 2em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.shutterButton {
+    border-radius: 100%;
+    padding: 20px;
+    font-size: xx-large;
+    box-shadow: #666 0 0 10px;
+    border-style: solid;
+    border-color: #333;
+    border-width: 2px;
+    background-color: #BBB;
+}
+
+.centerText {
+    text-align: center;
+    width: 50%;
+    font-size: large;
 }

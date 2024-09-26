@@ -1,7 +1,8 @@
 from flask import Flask, render_template, Response, jsonify, request, session
+from predict import predict
+import time
 
 app = Flask(__name__)
-
 
 
 @app.errorhandler(404)
@@ -17,24 +18,33 @@ def index():
 def home():
     return render_template('home.html')
 
-@app.route('/video')
-def video():
-    return render_template('video.html')
+# @app.route('/video')
+# def video():
+#     return render_template('video.html')
 
 @app.route('/post_frame', methods=['POST', 'GET'])
 def post_frame():
-    if 'file' not in request.files:
+    if 'frame' not in request.files:
         return jsonify({"error": "No file part"}), 400
 
-    file = request.files['file']
+    frame = request.files['frame']
+    
+    predictions = predict(frame)
+    predicts = []
+    for prediction in predictions[-1:][0]:
+        predicts.append(
+            {
+                "class": prediction['class'],
+                "confidence": prediction['confidence'],
+                "box": prediction['box']
+            }
+        )
+    return jsonify(predicts)    
 
-    print(type(file))
-    
-    predictions = []
-    for i in range(10):
-        predictions.append(['label' + str(i), 1.0 - i/10])
-    return jsonify(predictions)
-    
+[{'class': 'person', 'confidence': 0.9668554663658142, 'box': [481, 339, 89, 112]}, 
+ {'class': 'person', 'confidence': 0.9501999020576477, 'box': [175, 198, 283, 283]}, 
+ {'class': 'person', 'confidence': 0.6560819745063782, 'box': [174, 314, 65, 127]}]
+
 
 @app.route('/image')
 def image():

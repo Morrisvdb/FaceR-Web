@@ -4,4 +4,6 @@
 /lib64
 pyvenv.cfg
 /Models
+/share
+/temp
 web/__pycache__

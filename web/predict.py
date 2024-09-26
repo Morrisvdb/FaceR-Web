@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 import os
+import datetime
+import uuid
 
 def load_yolo_model(weights_path, config_path, names_path):
     if not os.path.exists(weights_path):
@@ -22,11 +24,11 @@ def load_yolo_model(weights_path, config_path, names_path):
     output_layers = [layer_names[i - 1] for i in unconnected_out_layers]
     return net, classes, output_layers
 
-def classify_objects(image_path, net, classes, output_layers, confidence_threshold=0.5, nms_threshold=0.4):
-    if not os.path.exists(image_path):
-        raise FileNotFoundError(f"Image file not found: {image_path}")
+def classify_objects(image, net, classes, output_layers, confidence_threshold=0.5, nms_threshold=0.4):
+    # if not os.path.exists(image_path):
+    #     raise FileNotFoundError(f"Image file not found: {image_path}")
 
-    image = cv2.imread(image_path)
+    # image = cv2.imread(image_path)
     height, width, channels = image.shape
 
     blob = cv2.dnn.blobFromImage(image, 0.00392, (416, 416), (0, 0, 0), True, crop=False)
@@ -73,23 +75,41 @@ def classify_objects(image_path, net, classes, output_layers, confidence_thresho
 
     return image, result
 
-# Example usage:
-base_path = './Models/YOLO3/'
-weights_path = base_path + 'yolov3.weights'
-config_path = base_path + 'yolov3.cfg'
-names_path = base_path + 'coco.names'
-image_path = './webcam_frame.jpg'
+def create_unique_filename(extension=".jpg"):
+    now = datetime.datetime.now()
+    unique_id = uuid.uuid4()
+    filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{unique_id}{extension}"
+    return filename
 
-net, classes, output_layers = load_yolo_model(weights_path, config_path, names_path)
-image, results = classify_objects(image_path, net, classes, output_layers)
+def predict(image):
+    base_path = './Models/YOLO3/'
+    weights_path = base_path + 'yolov3.weights'
+    config_path = base_path + 'yolov3.cfg'
+    names_path = base_path + 'coco.names'
+    filename = "./temp/" + create_unique_filename()
+    if not os.path.exists("./temp"):
+        os.makedirs("./temp")
+    image.save(filename)
+    image = cv2.imread(filename)
+    os.remove(filename)
 
-print(results)
+    net, classes, output_layers = load_yolo_model(weights_path, config_path, names_path)
+    
+    image, results = classify_objects(image, net, classes, output_layers)
+    
+    return image, results
 
-# # Display the image with bounding boxes
-cv2.imshow('Image with Bounding Boxes', image)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+def cleanup():
+    if len(os.listdir("./temp")) > 5:
+        for file in os.listdir("./temp"):
+            os.remove(f"./temp/{file}")
 
-# # Print the results
-# for res in results:
-#     print(f"Detected {res['class']} with confidence {res['confidence']} at {res['box']}")
+
+
+# Demo:
+
+# image = cv2.imread('webcam_frame.jpg')
+# image, results = predict(image)
+# cv2.imshow('Image with Bounding Boxes', image)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
