@@ -1,14 +1,25 @@
-<head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}">
-    <script src="https://kit.fontawesome.com/832e141ab8.js" crossorigin="anonymous"></script>
-</head>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='stylesheet.css') }}">
+        <script src="{{ url_for('static', filename='themeToggle.js') }}"></script>
+        <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+        <script src="https://kit.fontawesome.com/832e141ab8.js" crossorigin="anonymous"></script>
 
-<body>
-    <div class="navbar">
-        <a href="{{ url_for('home') }}">Home</a>
-        <a href="{{ url_for('image') }}">Image</a>
-        <a>Video</a>
-        <a href="{{ url_for('upload') }}">Upload</a>
-    </div>
-    {% block content %}{% endblock %}
-</body>
+        <title>FaceR AI - {% block title %}{% endblock %}</title>
+    </head>
+
+    <body>
+        <div class="navbar">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('image') }}">Image</a>
+            <a href="{{ url_for('video') }}">Video</a>
+            <a href="{{ url_for('upload') }}">Upload</a>
+            <div class='navbar-right'>
+                <button id="themeToggleButton">
+                    <i class="fa-solid fa-moon"></i>
+                </button>               
+            </div>
+        </div>
+        {% block content %}{% endblock %}
+    </body>
+</html>

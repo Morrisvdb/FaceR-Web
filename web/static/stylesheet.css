@@ -14,6 +14,58 @@ body {
     align-items: center;
     height: 100vh;
     color:white;
+
+}body {
+    font-family: Arial, sans-serif;
+    background-color: rgb(10, 10, 0);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color:white;
+}
+
+/* Light Mode */
+body.light-mode {
+    background-color: white;
+    color: black;
+}
+
+body.light-mode p {
+    color: black;
+}
+
+body.light-mode .container {
+    background-color: #f0f0f0;
+}
+
+body.light-mode .video-container,
+body.light-mode .chart-container {
+    border: #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark Mode */
+body.dark-mode {
+    background-color: #121212;
+    color: white;
+}
+
+body.dark-mode p {
+    color: white;
+}
+
+body.dark-mode .container {
+    background-color: #1e1e1e;
+}
+
+body.dark-mode .video-container,
+body.dark-mode .chart-container {
+    border: #333;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 p {
@@ -22,6 +74,10 @@ p {
 
 .container {
     display: flex;
+    margin-top: 2.5vmax;
+    background: transparent;
+    padding: 1vmax;
+    border-radius: 10px;
 }
 .video-container {
     flex: 1;
@@ -30,14 +86,42 @@ p {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 10px;
     border-radius: 10px;
+    margin-top: 1%;
+}
+.upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2.5vmax;
+    background: transparent;
+    padding: 1vmax;
+    border-radius: 10px;
+}
+.preview img {
+    width: 50vmax; /* Set the desired width */
+    height: 60vmin; /* Set the desired height */
+    object-fit: contain; /* Maintain aspect ratio */
+}
+.preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* margin-top: 1.5vmax; */
+    background: transparent;
+    /* padding: 1vmax; */
+    border-radius: 10px;
 }
 .chart-container {
-    width: 600px;
-    height: 600px;
-    border: #333;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1.5vmax;
+    background: transparent;
     border-radius: 10px;
+    width: 30vw;
 }
 h1 {
     margin-bottom: 20px;
@@ -79,6 +163,10 @@ footer {
     border-radius: 10px;
 }
 
+.navbar-right {
+    float: right;
+}
+
 #video
 {
     transform: rotateY(180deg);
@@ -110,4 +198,64 @@ footer {
     text-align: center;
     width: 50%;
     font-size: large;
+}
+
+#themeToggleButton {
+    position: absolute;
+    top: 0.6vmax;
+    right: 1%;
+    font-size: xx-large;
+    background-color: transparent;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.loginform {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    padding: 1vmax;
+    border-radius: 10px;
+}
+
+.loginform input {
+    margin: 3%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #333;
+    width: 100%;
+}
+
+.loginform p {
+    font-weight: bold;
+}
+
+.loginform button {
+    margin: 3%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #333;
+    width: 100%;
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: bold;
+    color: black;
+}
+
+.loginform button:hover {
+    background-color: var(--secondary-color);
+}
+
+.loginform label {
+    font-size: small;
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+    width: 100%;
+    margin-left: 3%;
+    margin-bottom: 0;
+    font-weight: bold;
 }

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{% block title %}Image{% endblock title %}
 
 {% block content %}
     <!DOCTYPE html>
@@ -9,7 +10,6 @@
         <script src="{{ url_for('static', filename='image.js') }}"></script>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Video Stream</title>
     </head>
     <body>
         <div class="container">
