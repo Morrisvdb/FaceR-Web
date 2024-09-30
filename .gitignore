@@ -7,3 +7,4 @@ pyvenv.cfg
 /share
 /temp
 web/__pycache__
+web/ssl

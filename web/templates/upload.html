@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Image Upload{% endblock title %}
+
+{% block content %}
+
+<head>
+    <script src="{{ url_for('static', filename='upload.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <title>Image Upload</title>
+    <style>
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class='upload-container'>
+            <h1>Upload an Image</h1>
+            <div class="preview" id="preview"></div>
+        </div>
+        <div class="chart-container">
+            <canvas id="resultChart"></canvas>
+            <footer class="results">
+                <p id="predicted">Predicted Class: N/A</p>
+                <p id="predicted-confidence">Confidence: N/A</p>
+                <p id="state"></p>
+            </footer>
+            <input type="file" id="imageInput" accept="image/*">
+            <button id="uploadButton" class="shutterButton"><i class="fa-solid fa-upload"></i></button>
+        </div>
+    </div>
+    
+</body>
+</html>
+
+{% endblock content %}

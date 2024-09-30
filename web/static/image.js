@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = new FormData();
             formData.append('frame', blob, 'frame.png');
 
-            fetch('/post_frame', {
+            fetch('/post_frame/h', {
                 method: 'POST',
                 body: formData
             })
