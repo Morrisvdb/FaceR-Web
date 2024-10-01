@@ -1,8 +1,6 @@
 from flask import Flask, render_template, Response, jsonify, request, session, redirect, url_for
 from predict import predict
-import time
 from datetime import timedelta
-import asyncio
 
 app = Flask(__name__)
 app.secret_key = 'kk321i2h9dbu292du2jb3riqudijnasjdkch'
@@ -63,11 +61,8 @@ def post_frame(type):
         return jsonify({"error": "No file part"}), 400
 
     frame = request.files['frame']
-    
-# Call the async predict function
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    image, predictions, ttime = loop.run_until_complete(predict(frame, type))
+    image, predictions, ttime = predict(frame, type)
+    print(predictions)
     
     predicts = []
     for prediction in predictions:
@@ -100,4 +95,5 @@ def upload():
 
 # Run the Flask app
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', ssl_context=('web/ssl/cert.pem', 'web/ssl/key.pem'), port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000, ssl_context='adhoc')
+    # app.run(debug=True, host='0.0.0.0', ssl_context=('web/ssl/cert.pem', 'web/ssl/key.pem'), port=5000)

@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Get access to the video element
     const video = document.getElementById('video');
-
     const ctx = document.getElementById('confidenceChart').getContext('2d');
     const predictedClassField = document.getElementById('predicted');
     const predictedConfidenceField = document.getElementById('predicted-confidence');
+    let isProcessing = false;
     const confidenceChart = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -41,6 +41,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to capture a frame and send it to the server
     function sendFrame() {
+        if (isProcessing) {
+            return;
+        }
+        isProcessing = true;
         // Pause the video feed
         const canvas = document.createElement('canvas');
         canvas.width = video.videoWidth;
@@ -49,6 +53,12 @@ document.addEventListener('DOMContentLoaded', () => {
         context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
         canvas.toBlob(blob => {
+            if (!blob) {
+                console.error('Error creating blob from canvas');
+                isProcessing = false;
+                return;
+            }
+
             const formData = new FormData();
             formData.append('frame', blob, 'frame.png');
 
@@ -63,12 +73,17 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch(error => {
                 console.error('Error:', error);
-                // Resume the video feed in case of error
+            })
+            .finally(() => {
+                isProcessing = false; // Reset the flag once processing is complete
             });
         }, 'image/png');
     }
 
     function updateChart(predictions) {
+        if (predictions.length === 0) {
+            return;
+        }
         clearBoxes();
         const canvas = document.createElement('canvas', {id: 'chartCanvas'});
         canvas.width = video.videoWidth;
@@ -114,7 +129,5 @@ document.addEventListener('DOMContentLoaded', () => {
             boxCanvas.remove();
         }
     }
-
-    setInterval(sendFrame, 5000);
-
+    setInterval(sendFrame, (1000/30));
 });

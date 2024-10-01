@@ -66,9 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .then(response => response.json())
             .then(data => {
+                progressText.innerHTML = '<i class="fa-solid fa-check-double"></i> Done!';
                 updateChart(data);
                 console.log('Success:', data);
-                progressText.innerHTML = '<i class="fa-solid fa-check-double"></i> Done!';
                 state = "ready";
             })
             .catch(error => {
@@ -78,6 +78,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 state = "ready";
             });
         }, 'image/png');
+    }
+
+    function swapCamera() {
+        const videoTracks = video.srcObject.getVideoTracks();
+        videoTracks.forEach(track => {
+            track.stop();
+        });
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+            .then(stream => {
+                video.srcObject = stream;
+                video.onloadedmetadata = () => {
+                    video.play();
+                };
+            })
+            .catch(error => {
+                console.error('Error accessing webcam: ', error);
+            });
     }
 
     function clear() {
@@ -99,6 +116,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateChart(predictions) {
+        if (predictions.length === 0) {
+            progressText.innerHTML = '<i class="fa-solid fa-exclamation"></i> No objects found';
+            return;
+        }
         confidenceChart.data.labels = predictions.map(prediction => prediction['class']);
         confidenceChart.data.datasets[0].data = predictions.map(prediction => prediction['confidence']);
         confidenceChart.update();
@@ -147,6 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     );
+
+    document.getElementById('swapButton').addEventListener('click', swapCamera);
 
     document.addEventListener('keydown', (event) => {
         if (event.code === 'Space') {

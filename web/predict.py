@@ -5,7 +5,7 @@ import datetime
 import uuid
 from ultralytics import YOLO
 import time
-import asyncio
+import torch
 
 def load_yolo_model(model_path):
     if not os.path.exists(model_path):
@@ -14,11 +14,16 @@ def load_yolo_model(model_path):
     model = YOLO(model_path)
     return model
 
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
 modell_path = './Models/YOLOv8/yolov8n.pt'  # Path to your YOLOv5 model
 modelh_path = './Models/YOLOv8/yolov8x.pt'  # Path to your YOLOv8 model
 
 modell = load_yolo_model(modell_path)
 modelh = load_yolo_model(modelh_path)
+
+modelh.to(device)
+modell.to(device)
 
 def classify_objects(image, model, confidence_threshold=0.5, nms_threshold=0.4):
     height, width, channels = image.shape
@@ -66,7 +71,7 @@ def create_unique_filename(extension=".jpg"):
     filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{unique_id}{extension}"
     return filename
 
-async def predict(image, type='l'):
+def predict(image, type='h'):
     stime = time.time()
     
     if type == 'l':
@@ -78,19 +83,18 @@ async def predict(image, type='l'):
 
     filename = create_unique_filename()
     
-    # Save the image asynchronously
-    loop = asyncio.get_event_loop()
-    await loop.run_in_executor(None, image.save, f"./temp/{filename}")
+    # Save the image
+    image.save(f"./temp/{filename}")
     
-    # Read the image asynchronously
-    image = await loop.run_in_executor(None, cv2.imread, f"./temp/{filename}")
+    # Read the image
+    image = cv2.imread(f"./temp/{filename}")
     image = cv2.flip(image, 1)
     
     # Classify objects
     image, results = classify_objects(image, model)
     
-    # Remove the image asynchronously
-    await loop.run_in_executor(None, os.remove, f"./temp/{filename}")
+    # Remove the image
+    os.remove(f"./temp/{filename}")
     
     ttime = time.time() - stime
     return image, results, ttime
