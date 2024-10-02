@@ -4,6 +4,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = document.getElementById('confidenceChart').getContext('2d');
     const predictedClassField = document.getElementById('predicted');
     const predictedConfidenceField = document.getElementById('predicted-confidence');
+    const confidenceSlider = document.getElementById('confidenceSlider');
+    const confidenceValueField = document.getElementById('confidenceValue');
+    const classSelect = document.getElementById('classSelect');
+    classSelect.selectedIndex = 0;
+    confidenceSlider.value = 50;
+    let selectedClass = null;
+    let confidenceValue = 50;
     let isProcessing = false;
     const confidenceChart = new Chart(ctx, {
         type: 'bar',
@@ -45,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         isProcessing = true;
-        // Pause the video feed
         const canvas = document.createElement('canvas');
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
@@ -62,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = new FormData();
             formData.append('frame', blob, 'frame.png');
 
-            fetch('/post_frame/l', {
+            fetch('/post_frame/l/' + confidenceValue/100, {
                 method: 'POST',
                 body: formData
             })
@@ -81,19 +87,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateChart(predictions) {
+        clearBoxes();
         if (predictions.length === 0) {
+            clearCanvas();
             return;
         }
-        clearBoxes();
-        const canvas = document.createElement('canvas', {id: 'chartCanvas'});
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        const context = canvas.getContext('2d');
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        if (selectedClass) {
+            passed = []
+            predictions.forEach(predict => {
+                if (predict['class'] === selectedClass) {
+                    passed.push(predict);
+                }
+            });
+            predictions = passed;
+        }
 
-        confidenceChart.data.labels = predictions.map(prediction => prediction['class']);
-        confidenceChart.data.datasets[0].data = predictions.map(prediction => prediction['confidence']);
-        confidenceChart.update();
+        if (predictions.length === 0) {
+            clearCanvas();
+            return;
+        }
 
         const boxCanvas = document.createElement('canvas');
         boxCanvas.id = 'boxCanvas';
@@ -102,18 +114,23 @@ document.addEventListener('DOMContentLoaded', () => {
         boxCanvas.style.position = 'absolute';
         boxCanvas.style.top = video.offsetTop + 'px';
         boxCanvas.style.left = video.offsetLeft + 'px';
+        boxCanvas.style.width = video.offsetWidth + 'px';
+        boxCanvas.style.height = video.offsetHeight + 'px';
+        boxCanvas.style.pointerEvents = 'none'; // Ensure the canvas does not interfere with video controls
         document.body.appendChild(boxCanvas);
         const boxContext = boxCanvas.getContext('2d');
+
         predictions.forEach(prediction => {
-            console.log(prediction['confidence']);
-            const [x, y, width, height] = prediction['box'];
-            boxContext.strokeStyle = 'rgba(255, 0, 0, 1)';
-            boxContext.lineWidth = 2;
-            boxContext.strokeRect(x, y, width, height);
-            boxContext.font = '16px Arial';
-            boxContext.fillStyle = 'rgba(255, 0, 0, 1)';
-            boxContext.fillText(prediction['class'], x+5, y + 15);
-            boxContext.fillText(prediction['confidence'].toFixed(2), x+5,y + 30);
+            if (prediction['box']) {
+                const [x, y, width, height] = prediction['box'];
+                boxContext.strokeStyle = 'rgba(255, 0, 0, 1)';
+                boxContext.lineWidth = 2;
+                boxContext.strokeRect(x, y, width, height);
+                boxContext.font = '16px Arial';
+                boxContext.fillStyle = 'rgba(255, 0, 0, 1)';
+                boxContext.fillText(prediction['class'], x + 5, y + 15);
+                boxContext.fillText(prediction['confidence'].toFixed(2), x + 5, y + 30);
+            }
         });
 
         const predictedClass = predictions[0]['class'];
@@ -129,5 +146,26 @@ document.addEventListener('DOMContentLoaded', () => {
             boxCanvas.remove();
         }
     }
+
+    function clearCanvas() {
+        confidenceChart.data.labels = [];
+        confidenceChart.data.datasets[0].data = [];
+        confidenceChart.update();
+    }
+
+    document.getElementById('confidenceSlider').addEventListener('input', (event) => {
+        confidenceValueField.innerHTML = event.target.value + "%";
+        confidenceValue = event.target.value;
+    });
+
+    document.getElementById('classSelect').addEventListener('change', (event) => {
+        if (event.target.value === 'null') {
+            selectedClass = null;
+        } else {
+            selectedClass = event.target.value;
+            console.log(selectedClass);
+        }
+    });
+    
     setInterval(sendFrame, (1000/30));
 });

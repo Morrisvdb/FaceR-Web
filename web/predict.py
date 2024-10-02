@@ -3,9 +3,10 @@ import numpy as np
 import os
 import datetime
 import uuid
-from ultralytics import YOLO
+from ultralytics import YOLO, solutions
 import time
 import torch
+
 
 def load_yolo_model(model_path):
     if not os.path.exists(model_path):
@@ -16,8 +17,11 @@ def load_yolo_model(model_path):
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-modell_path = './Models/YOLOv8/yolov8n.pt'  # Path to your YOLOv5 model
+# NOTE: YOLOv11 is slightly less accurate but faster than YOLOv8. It's a drop in replacement
+modell_path = './Models/YOLOv11/yolo11n.pt'  # Path to your YOLOv8 model
+# modell_path = './Models/YOLOv8/yolov8n.pt'  # Path to your YOLOv8 model
 modelh_path = './Models/YOLOv8/yolov8x.pt'  # Path to your YOLOv8 model
+# modelh_path = './Models/YOLOv11/yolo11x.pt'  # Path to your YOLOv8 model
 
 modell = load_yolo_model(modell_path)
 modelh = load_yolo_model(modelh_path)
@@ -71,7 +75,18 @@ def create_unique_filename(extension=".jpg"):
     filename = f"{now.strftime('%Y%m%d_%H%M%S')}_{unique_id}{extension}"
     return filename
 
-def predict(image, type='h'):
+def get_class_names(type='h'):
+    if type == 'l':
+        model = modell
+    elif type == 'h':
+        model = modelh
+    else:
+        return None
+
+    return model.names
+
+
+def predict(image, type='h', threshold=0.5):
     stime = time.time()
     
     if type == 'l':
@@ -91,7 +106,7 @@ def predict(image, type='h'):
     image = cv2.flip(image, 1)
     
     # Classify objects
-    image, results = classify_objects(image, model)
+    image, results = classify_objects(image=image, model=model, confidence_threshold=threshold)
     
     # Remove the image
     os.remove(f"./temp/{filename}")

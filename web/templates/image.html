@@ -18,23 +18,27 @@
             </div>
             <div class="chart-container">
                 <canvas id="confidenceChart"></canvas>
-                <div>
-                    <div id="predicted">Predicted Class: N/A</div>
-                    <div id="predicted-confidence">Confidence: N/A</div>
-                    <div id="progressText">Ready...</div>
-                </div>
+                
             </div>
         </div>
-        <div class="buttonFooter">
+        <div class=prediction-details>
+            <div>
+                <div id="predicted">Predicted Class: N/A</div>
+                <div id="predicted-confidence">Confidence: N/A</div>
+                <div id="progressText">Ready...</div>
+            </div><br>
+            <div class="buttonFooter">
 
-            <button class="shutterButton" id="shutterButton">
-                <i class="fa-solid fa-camera"></i>
-            </button>
-            <button class="shutterButton" id="swapButton">
-                <i class="fa-solid fa-camera-rotate"></i>
-            </button>
-
+                <button class="shutterButton" id="shutterButton">
+                    <i class="fa-solid fa-camera"></i>
+                </button>
+                <button class="shutterButton" id="swapButton">
+                    <i class="fa-solid fa-camera-rotate"></i>
+                </button>
+    
+            </div>
         </div>
+        
     </body>
     </html>
 {% endblock %}

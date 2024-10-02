@@ -17,14 +17,30 @@
             <div class="video-container">
                 <video src="" autoplay id="video"></video>
             </div>
+
             <div class="chart-container">
                 <canvas id="confidenceChart"></canvas>
-                <footer>
-                    <p id="predicted">Predicted Class: N/A</p>
-                    <p id="predicted-confidence">Confidence: N/A</p>
-                </footer>
             </div>
         </div>
+        <div class="prediction-details">
+            <p id="predicted">Predicted Class: N/A</p>
+            <p id="predicted-confidence">Confidence: N/A</p>
+            <label for="confidenceSlider">Confidence Threshold: </label>
+            <input type="range" name="confidenceSlider" id="confidenceSlider" min="0" max="100" value="0" step="1" list="my-detents">
+            <div id="confidenceValue">50%</div>
+            <label for="classSelect">Class to Isolate</label>
+            <select name="classSelect" id="classSelect">
+                <option value="null" selected>All</option>  
+                {% for class_name in class_names %}
+                        <option value="{{class_name}}">{{class_name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+
+    <datalist id="my-detents">
+        <option value="50">
+    </datalist>
     </body>
     </html>
 {% endblock %}

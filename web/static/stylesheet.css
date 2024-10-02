@@ -1,164 +1,34 @@
 :root {
     --primary-color: rgb(255, 0, 255);
     --secondary-color: rgb(0, 255, 255);
+    --dark-mode-background: rgb(25, 25, 25);
+    --dark-mode-text: rgb(255, 255, 255);
+    --light-mode-background: rgb(255, 255, 255);
+    --light-mode-text: rgb(0, 0, 0);
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: rgb(10, 10, 0);
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    color:white;
-
-}body {
-    font-family: Arial, sans-serif;
-    background-color: rgb(10, 10, 0);
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    color:white;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--dark-mode-background);
+    color: var(--dark-mode-text);
 }
 
-/* Light Mode */
 body.light-mode {
-    background-color: white;
-    color: black;
+    background-color: var(--light-mode-background);
+    color: var(--light-mode-text);
 }
 
-body.light-mode p {
-    color: black;
-}
-
-body.light-mode .container {
-    background-color: #f0f0f0;
-}
-
-body.light-mode .video-container,
-body.light-mode .chart-container {
-    border: #ccc;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Dark Mode */
 body.dark-mode {
-    background-color: #121212;
-    color: white;
+    background-color: var(--dark-mode-background);
+    color: var(--dark-mode-text);
 }
 
-body.dark-mode p {
-    color: white;
-}
-
-body.dark-mode .container {
-    background-color: #1e1e1e;
-}
-
-body.dark-mode .video-container,
-body.dark-mode .chart-container {
-    border: #333;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-p {
-    color: white;
-}
-
-.container {
-    display: flex;
-    margin-top: 7.5vmax;
-    height: 60vh;
-    background: transparent;
-    padding: 1vmax;
-    border-radius: 10px;
-}
-.video-container {
-    flex: 1;
-    margin-right: 20px;
-    border: #333;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 10px;
-    border-radius: 10px;
-    margin-top: 1%;
-    overflow: hidden;
-}
-.upload-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 2.5vmax;
-    background: transparent;
-    padding: 1vmax;
-    border-radius: 10px;
-}
-.preview img {
-    width: 50vmax; /* Set the desired width */
-    height: 60vmin; /* Set the desired height */
-    object-fit: contain; /* Maintain aspect ratio */
-}
-.preview {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    /* margin-top: 1.5vmax; */
-    background: transparent;
-    /* padding: 1vmax; */
-    border-radius: 10px;
-}
-.chart-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 1%;
-    justify-content: center;
-    background: transparent;
-    border-radius: 10px;
-    width: 30vw;
-    padding-top: 10%;
-    font-size: normal;
-}
-.chart-container:p {
-    line-height: 0px;
-}
-.buttonFooter {
-   margin-top: 1%;
-}
-h1 {
-    margin-bottom: 20px;
-}
-img {
-    width: 100%;
-    max-width: 600px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.navbar a {
-    float: left;
-    font-size: large;
-    color: white;
+.centerText {
     text-align: center;
-    padding: 1vmax;
-    text-decoration: none;
-    font-weight: bold;
-    color: rgb(10, 10, 10);
+    margin:auto;
+    font-size: large;
 }
 
-.navbar a:hover {
-    background-color: var(--secondary-color);
-    color: black;
-    border-radius: 10px;
-}
 .navbar {
     background-color: var(--primary-color);
     position: absolute;
@@ -168,24 +38,23 @@ img {
     border-radius: 10px;
 }
 
+.navbar a {
+    float: left;
+    font-size: large;
+    color: white;
+    text-align: center;
+    padding: 1%;
+    text-decoration: none;
+    font-weight: bold;
+    color: rgb(10, 10, 10);
+}
+
+.navbar a:hover {
+    background-color: var(--secondary-color);
+}
+
 .navbar-right {
     float: right;
-}
-
-#video
-{
-    transform: rotateY(180deg);
-    -webkit-transform:rotateY(180deg); /* Safari and Chrome */
-    -moz-transform:rotateY(180deg); /* Firefox */
-}
-
-#loading {
-    display: none;
-    font-size: 2em;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
 
 .shutterButton {
@@ -199,61 +68,55 @@ img {
     background-color: #BBB;
 }
 
-.centerText {
-    text-align: center;
-    width: 50%;
-    font-size: large;
-}
-
 #themeToggleButton {
     position: absolute;
     top: 0.6vmax;
     right: 1%;
     font-size: xx-large;
     background-color: transparent;
-    color: white;
+    color: black;
     border: none;
     cursor: pointer;
 }
 
+.splash-text {
+    position: absolute;
+    right: 5%;
+    top: 17.5%;
+    transform: rotate(30deg);
+    font-size: large;
+}
+
 .loginform {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    padding: 1vmax;
-    border-radius: 10px;
+    text-align: center;
 }
 
-.loginform input {
-    margin: 3%;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #333;
-    width: 100%;
-}
-
-.loginform p {
-    font-weight: bold;
+.loginform input[type=text], input[type=password] {
+    width: 20%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
 }
 
 .loginform button {
-    margin: 3%;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #333;
-    width: 100%;
     background-color: var(--primary-color);
     color: white;
-    font-weight: bold;
-    color: black;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 20%;
 }
 
 .loginform button:hover {
-    background-color: var(--secondary-color);
+    opacity: 0.8;
 }
 
+.loginform label {
+    display: block;
+}
 .loginform label {
     font-size: small;
     display: block;
@@ -263,4 +126,65 @@ img {
     margin-left: 3%;
     margin-bottom: 0;
     font-weight: bold;
+}
+
+.container {
+    display: flex;
+    padding: 16px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    background: transparent;
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 3%;
+}
+
+.video-container,
+.chart-container {
+    flex: 1;
+    margin: 0 8px;
+    border: #333;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 1%;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.prediction-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 8px;
+    border: #333;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.prediction-details p {
+    text-align: left;
+}
+
+.prediction-details select {
+    width: 10%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+#video {
+    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg); /* Safari and Chrome */
+    -moz-transform: rotateY(180deg); /* Firefox */
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* Ensure the video covers the container while maintaining aspect ratio */
 }

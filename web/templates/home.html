@@ -3,13 +3,14 @@
 {% block title %}Home{% endblock title %}
 
 {% block content %}
-
-<div class="centerText">
-    <h1>Welcome</h1>
-    <p>
-        This is a simple web application to show the powers (and flaws) of ai. <br>
-        Please select an option from the navigation bar to get started.
-    </p>
-</div>
-
+    <div class="splash-text">
+        <p>{{ splash_text }}</p>
+    </div>
+    <div class="centerText">
+        <h1>Welcome</h1>
+        <p>
+            This is a simple web application to show the powers (and flaws) of ai. <br>
+            Please select an option from the navigation bar to get started.
+        </p>
+    </div>
 {% endblock content %}

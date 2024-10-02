@@ -10,3 +10,10 @@ wget https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8s.pt
 wget https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8m.pt
 wget https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8l.pt
 wget https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8x.pt
+
+# YOLOv11
+wget https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11n.pt
+wget https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11s.pt
+wget https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt
+wget https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11l.pt
+wget https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11x.pt
