@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Request access to the user's webcam
-    navigator.mediaDevices.getUserMedia({ video: true })
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
         .then(stream => {
             video.srcObject = stream;
             video.onloadedmetadata = () => {
@@ -79,24 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }, 'image/png');
     }
-
-    function swapCamera() {
-        const videoTracks = video.srcObject.getVideoTracks();
-        videoTracks.forEach(track => {
-            track.stop();
-        });
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
-            .then(stream => {
-                video.srcObject = stream;
-                video.onloadedmetadata = () => {
-                    video.play();
-                };
-            })
-            .catch(error => {
-                console.error('Error accessing webcam: ', error);
-            });
-    }
-
+    
     function clear() {
         if (state === "processing") {
             return;  // Do not clear if still processing

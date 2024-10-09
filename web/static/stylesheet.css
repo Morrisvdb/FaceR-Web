@@ -11,6 +11,7 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     background-color: var(--dark-mode-background);
     color: var(--dark-mode-text);
+    margin-top: 5%;
 }
 
 body.light-mode {
@@ -110,24 +111,19 @@ body.dark-mode {
     width: 20%;
 }
 
+/* @media screen and (max-width: 895px) {
+    .loginform input[type=text], input[type=password] {
+        width: 100%;
+    }
+    .loginform button {
+        width: 100%;
+    }
+    
+} */
+
 .loginform button:hover {
     opacity: 0.8;
 }
-
-.loginform label {
-    display: block;
-}
-.loginform label {
-    font-size: small;
-    display: block;
-    margin-bottom: 5px;
-    text-align: left;
-    width: 100%;
-    margin-left: 3%;
-    margin-bottom: 0;
-    font-weight: bold;
-}
-
 .container {
     display: flex;
     padding: 16px;
@@ -154,6 +150,10 @@ body.dark-mode {
     justify-content: center;
     align-items: center;
 }
+
+/* @media screen and (max-width: 748px) {
+    
+} */
 
 .prediction-details {
     display: flex;
@@ -187,4 +187,12 @@ body.dark-mode {
     width: 100%;
     height: auto;
     object-fit: cover; /* Ensure the video covers the container while maintaining aspect ratio */
+}
+
+@media screen and (max-width: 748px) {
+    #video {
+        width: 100%;
+        height: auto;
+    }
+    
 }
