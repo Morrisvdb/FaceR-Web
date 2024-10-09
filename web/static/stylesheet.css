@@ -111,16 +111,6 @@ body.dark-mode {
     width: 20%;
 }
 
-/* @media screen and (max-width: 895px) {
-    .loginform input[type=text], input[type=password] {
-        width: 100%;
-    }
-    .loginform button {
-        width: 100%;
-    }
-    
-} */
-
 .loginform button:hover {
     opacity: 0.8;
 }
@@ -151,9 +141,13 @@ body.dark-mode {
     align-items: center;
 }
 
-/* @media screen and (max-width: 748px) {
-    
+/* .contestContainer {
+    width: 100%;
 } */
+
+.leaderboard {
+    width: 80%
+}
 
 .prediction-details {
     display: flex;

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Leaderboard{% endblock title %}
+
+{% block content %}
+
+    <head>
+        <title>Leaderboard</title>
+        <script src="{{ url_for('static', filename='leaderboard.js') }}"></script>
+        <script src="{{ url_for('static', filename='chart.js') }}"></script>
+    </head>
+    <body>
+        <h1>Leaderboard</h1>
+        <div class="contestContainer container">
+            <div class='leaderboard'>
+                <canvas id="leaderboardChart"></canvas>
+            </div>
+        </div>
+          
+    </body>
+    </html>
+
+{% endblock content %}
