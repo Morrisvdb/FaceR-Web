@@ -13,28 +13,32 @@
     </head>
     <body>
         <div class="container">
-            <!-- <canvas id="boxCanvas"> -->
-                <div class="video-container">
-                    <video src="" autoplay id="video"></video>
-                </div>
-            <!-- </canvas> -->
+            <div class="video-container">
+                <video src="" autoplay id="video"></video>
+            </div>
             <div class="chart-container">
                 <canvas id="confidenceChart"></canvas>
-                <footer>
-                    <p id="predicted">Predicted Class: N/A</p>
-                    <p id="predicted-confidence">Confidence: N/A</p>
-                    <p id="progressText">Ready...</p>
-                </footer>
+                
             </div>
         </div>
-        <footer>
+        <div class=prediction-details>
+            <div>
+                <div id="predicted">Predicted Class: N/A</div>
+                <div id="predicted-confidence">Confidence: N/A</div>
+                <div id="progressText">Ready...</div>
+            </div><br>
+            <div class="buttonFooter">
 
-            <button class="shutterButton" id="shutterButton">
-                <i class="fa-solid fa-camera"></i>  
-            </button>
-            <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
-        </footer>
+                <button class="shutterButton" id="shutterButton">
+                    <i class="fa-solid fa-camera"></i>
+                </button>
+                <button class="shutterButton" id="swapButton">
+                    <i class="fa-solid fa-camera-rotate"></i>
+                </button>
+    
+            </div>
+        </div>
+        
     </body>
     </html>
 {% endblock %}

@@ -2,6 +2,7 @@
 /include
 /lib
 /lib64
+/Scripts
 pyvenv.cfg
 /Models
 /share

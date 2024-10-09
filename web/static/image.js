@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Request access to the user's webcam
-    navigator.mediaDevices.getUserMedia({ video: true })
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
         .then(stream => {
             video.srcObject = stream;
             video.onloadedmetadata = () => {
@@ -60,15 +60,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = new FormData();
             formData.append('frame', blob, 'frame.png');
 
-            fetch('/post_frame/h', {
+            fetch('/post_frame/h/0.5', {
                 method: 'POST',
                 body: formData
             })
             .then(response => response.json())
             .then(data => {
+                progressText.innerHTML = '<i class="fa-solid fa-check-double"></i> Done!';
                 updateChart(data);
                 console.log('Success:', data);
-                progressText.innerHTML = '<i class="fa-solid fa-check-double"></i> Done!';
                 state = "ready";
             })
             .catch(error => {
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }, 'image/png');
     }
-
+    
     function clear() {
         if (state === "processing") {
             return;  // Do not clear if still processing
@@ -99,6 +99,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateChart(predictions) {
+        if (predictions.length === 0) {
+            progressText.innerHTML = '<i class="fa-solid fa-exclamation"></i> No objects found';
+            return;
+        }
         confidenceChart.data.labels = predictions.map(prediction => prediction['class']);
         confidenceChart.data.datasets[0].data = predictions.map(prediction => prediction['confidence']);
         confidenceChart.update();
@@ -147,6 +151,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     );
+
+    document.getElementById('swapButton').addEventListener('click', swapCamera);
 
     document.addEventListener('keydown', (event) => {
         if (event.code === 'Space') {

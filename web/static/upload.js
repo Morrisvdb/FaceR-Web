@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
         reader.readAsDataURL(file);
     
         // Send the image to the server
-        fetch('/post_frame/h', {
+        fetch('/post_frame/h/0.5', {
             method: 'POST',
             body: formData
         })
