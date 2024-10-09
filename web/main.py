@@ -114,11 +114,11 @@ def video():
     class_names = class_names.values()
     return render_template('video.html', class_names=class_names)  
 
-@app.route('/upload')
-def upload():
-    if not session.get('authenticated'):
-        return redirect(url_for('login', next_url=url_for('image').split('/')[-1]))
-    return render_template('upload.html')
+# @app.route('/upload')
+# def upload():
+#     if not session.get('authenticated'):
+#         return redirect(url_for('login', next_url=url_for('image').split('/')[-1]))
+#     return render_template('upload.html')
 
 @app.route('/competition/join', methods=['GET', 'POST'])
 def competition_join():
@@ -161,10 +161,14 @@ def leaderboard():
     leaderboard = []
     for contestant in contestants:
         found_objects = FoundObjects.query.filter_by(contestant_id=contestant.id).all()
+        victory = 'false'
+        if len(found_objects) >= 5:
+            victory = 'true'
         leaderboard.append(
             {
                 "username": contestant.username,
-                "found_objects": len(found_objects)
+                "found_objects": len(found_objects),
+                "victory": victory
             }
         )
     leaderboard = sorted(leaderboard, key=lambda x: x['found_objects'], reverse=True)
