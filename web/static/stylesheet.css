@@ -58,6 +58,13 @@ body.dark-mode {
     float: right;
 }
 
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
 .shutterButton {
     border-radius: 100%;
     padding: 20px;
@@ -88,6 +95,30 @@ body.dark-mode {
     font-size: large;
 }
 
+#victorySign {
+    font-size: xx-large;
+    color: var(--primary-color);
+    text-align: center;
+}
+
+.ConfettiDiv {
+    position: absolute;
+    /* margin-top: 30vh;
+    width: 100%;
+    text-align: center;
+    font-size: 333%;
+    font-family: sans-serif;
+    color: grey;
+    opacity: 0.5; */
+  }
+
+.ConfettiCanvas {
+    overflow-y: hidden;
+    overflow-x: hidden;
+    width: 100%;
+    margin: 0;
+}
+
 .loginform {
     text-align: center;
 }
@@ -110,16 +141,6 @@ body.dark-mode {
     cursor: pointer;
     width: 20%;
 }
-
-/* @media screen and (max-width: 895px) {
-    .loginform input[type=text], input[type=password] {
-        width: 100%;
-    }
-    .loginform button {
-        width: 100%;
-    }
-    
-} */
 
 .loginform button:hover {
     opacity: 0.8;
@@ -151,9 +172,13 @@ body.dark-mode {
     align-items: center;
 }
 
-/* @media screen and (max-width: 748px) {
-    
+/* .contestContainer {
+    width: 100%;
 } */
+
+.leaderboard {
+    width: 80%
+}
 
 .prediction-details {
     display: flex;

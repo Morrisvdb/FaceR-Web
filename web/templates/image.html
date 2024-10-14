@@ -6,12 +6,15 @@
     <!DOCTYPE html>
     <html lang="en">
     <head>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="{{ url_for('static', filename='chart.js') }}"></script>
         <script src="{{ url_for('static', filename='image.js') }}"></script>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
+        <div class="center">
+            <h1>Image Classification{% if session['is_competing'] %} - Contending{% endif %}</h1> 
+        </div>        
         <div class="container">
             <div class="video-container">
                 <video src="" autoplay id="video"></video>

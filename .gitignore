@@ -9,3 +9,4 @@ pyvenv.cfg
 /temp
 web/__pycache__
 web/ssl
+database.db

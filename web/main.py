@@ -1,11 +1,10 @@
 from flask import Flask, render_template, Response, jsonify, request, session, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
 from predict import predict, get_class_names
 from datetime import timedelta
 import random, cv2, base64
-
-app = Flask(__name__)
-app.secret_key = 'kk321i2h9dbu292du2jb3riqudijnasjdkch'
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
+from __init__ import app, db
+from models import Contestant, FoundObjects
 
 PASSWORD = 'cals1900'
 ADMIN_PASSWORD = '2008'
@@ -81,7 +80,24 @@ def post_frame(type, threshold):
                 "confidence": prediction['confidence'],
                 "box": prediction['box'],
             }
-        )        
+        )
+    
+    if session['is_competing']:
+        contestant = Contestant.query.filter_by(username=session['username']).first()
+        if contestant is None:
+            return jsonify({"error": "Contestant not found"}), 404
+        
+        if len(predicts) <= 0:
+            pass
+        else:
+            already_found = FoundObjects.query.filter_by(contestant_id=contestant.id, class_name=predicts[0]['class']).all()
+            if already_found:
+                pass
+            else:
+                new_found_object = FoundObjects(class_name=predicts[0]['class'], confidence=predicts[0]['confidence'], contestant_id=contestant.id)
+                db.session.add(new_found_object)
+                db.session.commit()
+        
     return jsonify(predicts)
 
 @app.route('/image')
@@ -98,11 +114,71 @@ def video():
     class_names = class_names.values()
     return render_template('video.html', class_names=class_names)  
 
-@app.route('/upload')
-def upload():
-    if not session.get('authenticated'):
-        return redirect(url_for('login', next_url=url_for('image').split('/')[-1]))
-    return render_template('upload.html')
+# @app.route('/upload')
+# def upload():
+#     if not session.get('authenticated'):
+#         return redirect(url_for('login', next_url=url_for('image').split('/')[-1]))
+#     return render_template('upload.html')
+
+@app.route('/competition/join', methods=['GET', 'POST'])
+def competition_join():
+    if session.get('is_competing'):
+        return redirect(url_for('competition'))
+    if request.method == 'POST':
+        username = request.form['username']
+        if not username:
+            return render_template('join_competition.html', error='Username is required')
+        is_in_use = Contestant.query.filter_by(username=username).first()
+        if is_in_use:
+            return render_template('join_competition.html', error='Username is already in use')
+        new_contestant = Contestant(username=username)
+        db.session.add(new_contestant)
+        db.session.commit()
+        session['username'] = username
+        session['is_competing'] = True
+        return redirect(url_for('competition'))
+    
+    return render_template('join_competition.html')
+
+@app.route('/competition/leave')
+def competition_leave():
+    if not session.get('is_competing'):
+        return redirect(url_for('join'))
+    session['is_competing'] = False
+    username = session.pop('username', None)
+    user = Contestant.query.filter_by(username=username).first()
+    db.session.delete(user)
+    db.session.commit()
+    return redirect(url_for('home'))
+    
+@app.route('/competition/leaderboard')
+def competition_leaderboard():
+    return render_template('leaderboard.html')
+
+@app.route('/leaderboard')
+def leaderboard():
+    contestants = Contestant.query.all()
+    leaderboard = []
+    for contestant in contestants:
+        found_objects = FoundObjects.query.filter_by(contestant_id=contestant.id).all()
+        victory = 'false'
+        if len(found_objects) >= 5:
+            victory = 'true'
+        leaderboard.append(
+            {
+                "username": contestant.username,
+                "found_objects": len(found_objects),
+                "victory": victory
+            }
+        )
+    leaderboard = sorted(leaderboard, key=lambda x: x['found_objects'], reverse=True)
+    return jsonify(leaderboard)
+
+@app.route('/competition')
+def competition():
+    if not session.get('is_competing'):
+        return redirect(url_for('competition_join'))
+    return render_template('competition.html')
 
 # Run the Flask app
 if __name__ == "__main__":

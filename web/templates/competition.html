@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Competition{% endblock title %}
+
+{% block content %}
+
+    <head>
+        <title>Competition</title>
+    </head>
+    <body>
+        <h1>Competition</h1>
+        <div>
+            <div class='competition'>
+                <a href="{{ url_for('competition_leave') }}">Leave</a>
+
+                <a href="{{ url_for('competition_leaderboard') }}">Leaderboard</a>
+            </div>
+        </div>
+         
+    </body>
+    </html>
+
+{% endblock content %}

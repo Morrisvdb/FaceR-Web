@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Leaderboard{% endblock title %}
+
+{% block content %}
+
+    <head>
+        <div class="center">
+            <h1>Leaderboard</h1>
+        </div>
+        <script src="{{ url_for('static', filename='leaderboard.js') }}"></script>
+        <script src="{{ url_for('static', filename='chart.js') }}"></script>
+        <script src="{{ url_for('static', filename='createConfetti.js') }}"></script>
+    </head>
+    <body>
+        <div class="contestContainer container ConfettiDiv">
+            <div class='leaderboard'>
+                <canvas id="leaderboardChart"></canvas>
+                <div id="victorySign" style="display: none;"></div>
+            </div>
+        </div>
+        <canvas id="ConfettiCanvas"></canvas>
+    </body>
+    </html>
+
+{% endblock content %}
