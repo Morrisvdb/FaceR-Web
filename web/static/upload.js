@@ -1,3 +1,5 @@
+// WARNING: Depricated
+
 document.addEventListener('DOMContentLoaded', function() {
     const uploadButton = document.getElementById('uploadButton');
     const imageInput = document.getElementById('imageInput');

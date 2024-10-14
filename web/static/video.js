@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Get access to the video element
     const video = document.getElementById('video');
-    const ctx = document.getElementById('confidenceChart').getContext('2d');
     const predictedClassField = document.getElementById('predicted');
     const predictedConfidenceField = document.getElementById('predicted-confidence');
     const confidenceSlider = document.getElementById('confidenceSlider');
@@ -18,27 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let selectedClass = null;
     let confidenceValue = 50;
     let isProcessing = false;
-    const confidenceChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: [],
-            datasets: [{
-                label: 'Confidence Score',
-                data: [{x: 1, y: 1}],
-                backgroundColor: 'rgba(255,0,255,0.3)',
-                borderColor: 'rgba(255, 255, 255, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: 1
-                }
-            }
-        }
-    });
 
     // Request access to the user's webcam
     navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
@@ -66,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         canvas.toBlob(blob => {
             if (!blob) {
-                console.error('Error creating blob from canvas');
+                console.error("Error creating blob from canvas, if it doesn't seem to be causing any issues, you can ignore this message.");
                 isProcessing = false;
                 return;
             }
@@ -81,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.json())
             .then(data => {
                 updateChart(data);
-                console.log('Success:', data);
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -94,10 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateChart(predictions) {
         clearBoxes();
-        if (predictions.length === 0) {
-            clearCanvas();
-            return;
-        }
         if (selectedClass) {
             passed = []
             predictions.forEach(predict => {
@@ -109,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     
         if (predictions.length === 0) {
-            clearCanvas();
+            clearBoxes();
             return;
         }
     
@@ -154,11 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function clearCanvas() {
-        confidenceChart.data.labels = [];
-        confidenceChart.data.datasets[0].data = [];
-        confidenceChart.update();
-    }
 
     document.getElementById('classSelect').addEventListener('change', (event) => {
         if (event.target.value === 'null') {

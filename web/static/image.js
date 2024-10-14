@@ -1,3 +1,5 @@
+// WARNING: Depricated
+
 document.addEventListener('DOMContentLoaded', () => {
     // Get access to the video element
     const video = document.getElementById('video');

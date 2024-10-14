@@ -6,6 +6,7 @@ import uuid
 from ultralytics import YOLO, solutions
 import time
 import torch
+import torchvision
 
 
 def load_yolo_model(model_path):
@@ -16,6 +17,7 @@ def load_yolo_model(model_path):
     return model
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+# device = torch.device('cpu')
 
 # NOTE: YOLOv11 is slightly less accurate but faster than YOLOv8. It's a drop in replacement
 modell_path = './Models/YOLOv11/yolo11n.pt'  # Path to your YOLOv8 model
@@ -45,20 +47,30 @@ def classify_objects(image, model, confidence_threshold=0.5, nms_threshold=0.4):
             confidence = box.conf.item()  # Convert tensor to scalar
             class_id = box.cls.item()  # Convert tensor to scalar
             if confidence > confidence_threshold:
-                boxes.append([x1, y1, x2 - x1, y2 - y1])
+                boxes.append([x1, y1, x2, y2])
                 confidences.append(float(confidence))
                 class_ids.append(class_id)
 
-    indices = cv2.dnn.NMSBoxes(boxes, confidences, confidence_threshold, nms_threshold)
+    # Convert to tensors and move to CPU
+    if len(boxes) > 0:
+        boxes = torch.tensor(boxes, dtype=torch.float32).cpu()
+        confidences = torch.tensor(confidences, dtype=torch.float32).cpu()
+    else:
+        boxes = torch.empty((0, 4), dtype=torch.float32).cpu()
+        confidences = torch.empty((0,), dtype=torch.float32).cpu()
+
+    # Perform NMS on CPU
+    indices = torchvision.ops.nms(boxes, confidences, nms_threshold)
 
     result = []
     if len(indices) > 0:
-        for i in indices.flatten():
-            box = boxes[i]
-            x, y, w, h = box[0], box[1], box[2], box[3]
+        for i in indices:
+            box = boxes[i].tolist()
+            x, y, x2, y2 = map(int, box)  # Ensure coordinates are integers
+            w, h = x2 - x, y2 - y
             result.append({
                 "class": model.names[class_ids[i]],
-                "confidence": confidences[i],
+                "confidence": confidences[i].item(),
                 "box": [x, y, w, h]
             })
 
@@ -84,7 +96,6 @@ def get_class_names(type='h'):
         return None
 
     return model.names
-
 
 def predict(image, type='h', threshold=0.5):
     stime = time.time()

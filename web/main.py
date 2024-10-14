@@ -6,7 +6,7 @@ import random, cv2, base64
 from __init__ import app, db
 from models import Contestant, FoundObjects
 
-PASSWORD = 'cals1900'
+PASSWORD = 'pass'
 ADMIN_PASSWORD = '2008'
 
 @app.errorhandler(404)
@@ -123,12 +123,6 @@ def video():
     class_names = class_names.values()
     return render_template('video.html', class_names=class_names)  
 
-# @app.route('/upload')
-# def upload():
-#     if not session.get('authenticated'):
-#         return redirect(url_for('login', next_url=url_for('image').split('/')[-1]))
-#     return render_template('upload.html')
-
 @app.route('/competition/join', methods=['GET', 'POST'])
 def competition_join():
     if session.get('is_competing'):
@@ -156,8 +150,9 @@ def competition_leave():
     session['is_competing'] = False
     username = session.pop('username', None)
     user = Contestant.query.filter_by(username=username).first()
-    db.session.delete(user)
-    db.session.commit()
+    if user:
+        db.session.delete(user)
+        db.session.commit()
     return redirect(url_for('home'))
     
 @app.route('/competition/leaderboard')
