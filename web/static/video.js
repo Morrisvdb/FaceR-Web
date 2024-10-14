@@ -8,7 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const confidenceValueField = document.getElementById('confidenceValue');
     const classSelect = document.getElementById('classSelect');
     classSelect.selectedIndex = 0;
-    confidenceSlider.value = 50;
+    if (confidenceSlider !== null) {
+        confidenceSlider.value = 50;
+        document.getElementById('confidenceSlider').addEventListener('input', (event) => {
+            confidenceValueField.innerHTML = event.target.value + "%";
+            confidenceValue = event.target.value;
+        });
+    }
     let selectedClass = null;
     let confidenceValue = 50;
     let isProcessing = false;
@@ -101,25 +107,26 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             predictions = passed;
         }
-
+    
         if (predictions.length === 0) {
             clearCanvas();
             return;
         }
-
+    
         const boxCanvas = document.createElement('canvas');
         boxCanvas.id = 'boxCanvas';
+        const videoRect = video.getBoundingClientRect();
         boxCanvas.width = video.videoWidth;
         boxCanvas.height = video.videoHeight;
         boxCanvas.style.position = 'absolute';
-        boxCanvas.style.top = video.offsetTop + 'px';
-        boxCanvas.style.left = video.offsetLeft + 'px';
-        boxCanvas.style.width = video.offsetWidth + 'px';
-        boxCanvas.style.height = video.offsetHeight + 'px';
+        boxCanvas.style.top = videoRect.top + 'px';
+        boxCanvas.style.left = videoRect.left + 'px';
+        boxCanvas.style.width = videoRect.width + 'px';
+        boxCanvas.style.height = videoRect.height + 'px';
         boxCanvas.style.pointerEvents = 'none'; // Ensure the canvas does not interfere with video controls
         document.body.appendChild(boxCanvas);
         const boxContext = boxCanvas.getContext('2d');
-
+    
         predictions.forEach(prediction => {
             if (prediction['box']) {
                 const [x, y, width, height] = prediction['box'];
@@ -132,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 boxContext.fillText(prediction['confidence'].toFixed(2), x + 5, y + 30);
             }
         });
-
+    
         const predictedClass = predictions[0]['class'];
         const predictedConfidence = predictions[0]['confidence'] * 100;
         
@@ -152,11 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
         confidenceChart.data.datasets[0].data = [];
         confidenceChart.update();
     }
-
-    document.getElementById('confidenceSlider').addEventListener('input', (event) => {
-        confidenceValueField.innerHTML = event.target.value + "%";
-        confidenceValue = event.target.value;
-    });
 
     document.getElementById('classSelect').addEventListener('change', (event) => {
         if (event.target.value === 'null') {

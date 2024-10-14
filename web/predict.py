@@ -103,7 +103,7 @@ def predict(image, type='h', threshold=0.5):
     
     # Read the image
     image = cv2.imread(f"./temp/{filename}")
-    image = cv2.flip(image, 1)
+    # image = cv2.flip(image, 1)
     
     # Classify objects
     image, results = classify_objects(image=image, model=model, confidence_threshold=threshold)

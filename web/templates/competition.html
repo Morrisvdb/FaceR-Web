@@ -8,12 +8,14 @@
         <title>Competition</title>
     </head>
     <body>
-        <h1>Competition</h1>
+        <h1 class="center">Competition</h1>
         <div>
-            <div class='competition'>
-                <a href="{{ url_for('competition_leave') }}">Leave</a>
+            <div class='competition center' style='text-align: center;'>
+                <a href="{{ url_for('competition_leave') }}" class="button">Leave</a>
 
-                <a href="{{ url_for('competition_leaderboard') }}">Leaderboard</a>
+                <a href="{{ url_for('competition_leaderboard') }}" class="button">Leaderboard</a>
+
+                <a href="{{ url_for('reset_competition') }}" class="button">Reset</a>
             </div>
         </div>
          

@@ -14,7 +14,7 @@
     </head>
     <body>
         <div class="center">
-            <h1>Image Classification{% if session['is_competing'] %} - Contending{% endif %}</h1> 
+            <h1>Video Classification{% if session['is_competing'] %} - Contending{% endif %}</h1> 
         </div> 
         <div class="container">
             <div class="video-container">
@@ -28,9 +28,11 @@
         <div class="prediction-details">
             <p id="predicted">Predicted Class: N/A</p>
             <p id="predicted-confidence">Confidence: N/A</p>
-            <label for="confidenceSlider">Confidence Threshold: </label>
-            <input type="range" name="confidenceSlider" id="confidenceSlider" min="0" max="100" value="0" step="1" list="my-detents">
-            <div id="confidenceValue">50%</div>
+            {% if not session['is_competing'] %}
+                <label for="confidenceSlider">Confidence Threshold: </label>
+                <input type="range" name="confidenceSlider" id="confidenceSlider" min="0" max="100" value="0" step="1" list="my-detents">
+                <div id="confidenceValue">50%</div>
+            {% endif %}
             <label for="classSelect">Class to Isolate</label>
             <select name="classSelect" id="classSelect">
                 <option value="null" selected>All</option>  

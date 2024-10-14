@@ -68,6 +68,13 @@ def post_frame(type, threshold):
             return jsonify({"error": "Invalid threshold"}), 400
     except ValueError:
         return jsonify({"error": "Invalid threshold"}), 400
+    
+    if session.get('is_competing'):
+        contestant = Contestant.query.filter_by(username=session['username']).first()
+        if contestant is None:
+            session['is_competing'] = False
+            return redirect(url_for('home'))
+        threshold = 0.5
 
     frame = request.files['frame']
     image, predictions, ttime = predict(frame, type, threshold)
@@ -81,11 +88,13 @@ def post_frame(type, threshold):
                 "box": prediction['box'],
             }
         )
+        
     
-    if session['is_competing']:
+    if session.get('is_competing'):
         contestant = Contestant.query.filter_by(username=session['username']).first()
         if contestant is None:
-            return jsonify({"error": "Contestant not found"}), 404
+            session['is_competing'] = False
+            return redirect(url_for('home'))
         
         if len(predicts) <= 0:
             pass
@@ -154,6 +163,24 @@ def competition_leave():
 @app.route('/competition/leaderboard')
 def competition_leaderboard():
     return render_template('leaderboard.html')
+
+@app.route('/competition/reset', methods=['GET', 'POST'])
+def reset_competition():
+    if request.method == 'POST':
+        password = request.form['password']
+        if password == ADMIN_PASSWORD:
+            contestants = Contestant.query.all()
+            for contestant in contestants:
+                db.session.delete(contestant)
+            found_objects = FoundObjects.query.all()
+            for found_object in found_objects:
+                db.session.delete(found_object)
+            db.session.commit()
+            
+            return redirect(url_for('competition_leaderboard'))
+        else:
+            return render_template('login.html', error='Invalid password')
+    return render_template('login.html')
 
 @app.route('/leaderboard')
 def leaderboard():
