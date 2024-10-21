@@ -10,4 +10,5 @@ pyvenv.cfg
 web/__pycache__
 web/ssl
 database.db
+/var
 .env
