@@ -5,9 +5,13 @@ from datetime import timedelta
 import random, cv2, base64
 from __init__ import app, db
 from models import Contestant, FoundObjects
+import segno
+import os
+from dotenv import load_dotenv
 
-PASSWORD = 'pass'
-ADMIN_PASSWORD = '2008'
+load_dotenv()
+PASSWORD = os.getenv('PASSWORD')
+ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD')
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -122,6 +126,30 @@ def video():
     class_names = get_class_names('l')
     class_names = class_names.values()
     return render_template('video.html', class_names=class_names)  
+
+@app.route('/qr')
+def qr():
+    if os.path.exists('web/static/qr.png'):
+        return render_template('qr.html', qr='static/qr.png')
+    return redirect(url_for('qr_setup'))        
+
+@app.route('/qr/setup', methods=['GET', 'POST'])
+def qr_setup():
+    if request.method == 'POST':
+        password = request.form['password']
+        if password == ADMIN_PASSWORD:
+            url = request.form['url']
+            qr = segno.make(url)
+            qr.save(
+                'web/static/qr.png',
+                scale=15,
+                border=1,
+                )
+
+            return redirect(url_for('qr'))
+        else:
+            return render_template('qr_setup.html', error='Invalid password')
+    return render_template('qr_setup.html')
 
 @app.route('/competition/join', methods=['GET', 'POST'])
 def competition_join():

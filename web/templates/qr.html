@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}QR{% endblock title %}
+
+{% block content %}
+    <head>
+        <a href="{{ url_for('qr_setup') }}" class="button">Change Code</a>
+    </head>
+    <div class="container">
+        <img src="{{ qr }}" alt="QR" class="img-fluid" id="qr">
+    </div>
+{% endblock content %}

@@ -12,6 +12,7 @@ body {
     background-color: var(--dark-mode-background);
     color: var(--dark-mode-text);
     margin-top: 5%;
+    /* overflow: hidden; */
 }
 
 body.light-mode {
@@ -127,7 +128,7 @@ body.dark-mode {
     text-align: center;
 }
 
-.loginform input[type=text], input[type=password] {
+.loginform input[type=text], input[type=password], input[type=url] {
     width: 20%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -169,14 +170,14 @@ body.dark-mode {
     padding: 1%;
     border-radius: 10px;
     width: 100%;
-    overflow: hidden;
+    /* overflow: hidden; */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .leaderboard {
-    width: 80%;
+    width: 75%;
 }
 
 .prediction-details {
@@ -187,7 +188,7 @@ body.dark-mode {
     margin: 0 8px;
     border: #333;
     border-radius: 10px;
-    overflow: hidden;
+    /* overflow: hidden; */
     position: relative;
 }
 
@@ -214,9 +215,19 @@ body.dark-mode {
     object-fit: cover; /* Ensure the video covers the container while maintaining aspect ratio */
 }
 
+#qr {
+    width: 20%;
+    height: auto;
+    object-fit: cover; /* Ensure the video covers the container while maintaining aspect ratio */
+}
+
 @media screen and (max-width: 748px) {
     body {
         margin-top: 15%;
+    }
+
+    .non-mobile {
+        display: none;
     }
     
     .navbar a {

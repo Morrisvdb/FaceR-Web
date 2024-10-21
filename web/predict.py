@@ -19,6 +19,8 @@ def load_yolo_model(model_path):
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 # device = torch.device('cpu')
 
+print(f"Using device: {device}")
+
 # NOTE: YOLOv11 is slightly less accurate but faster than YOLOv8. It's a drop in replacement
 modell_path = './Models/YOLOv11/yolo11n.pt'  # Path to your YOLOv8 model
 # modell_path = './Models/YOLOv8/yolov8n.pt'  # Path to your YOLOv8 model
