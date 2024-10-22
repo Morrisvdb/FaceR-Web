@@ -7,12 +7,13 @@ from ultralytics import YOLO, solutions
 import time
 import torch
 import torchvision
+import requests
 
 
-def load_yolo_model(model_path):
+def load_yolo_model(model_path, model_url=None):
     if not os.path.exists(model_path):
-        raise FileNotFoundError(f"Model file not found: {model_path}")
-
+        print(FileNotFoundError(f"Model file not found: {model_path}; Downloading from {model_url}"))
+        model = requests.get(model_url)
     model = YOLO(model_path)
     return model
 
@@ -23,12 +24,12 @@ print(f"Using device: {device}")
 
 # NOTE: YOLOv11 is slightly less accurate but faster than YOLOv8. It's a drop in replacement
 modell_path = './Models/YOLOv11/yolo11n.pt'  # Path to your YOLOv8 model
-# modell_path = './Models/YOLOv8/yolov8n.pt'  # Path to your YOLOv8 model
+modell_url = 'https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11n.pt'
 modelh_path = './Models/YOLOv8/yolov8x.pt'  # Path to your YOLOv8 model
-# modelh_path = './Models/YOLOv11/yolo11x.pt'  # Path to your YOLOv8 model
+modelh_url = 'https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8x.pt'
 
-modell = load_yolo_model(modell_path)
-modelh = load_yolo_model(modelh_path)
+modell = load_yolo_model(modell_path, modell_url)
+modelh = load_yolo_model(modelh_path, modelh_url)
 
 modelh.to(device)
 modell.to(device)
@@ -110,6 +111,9 @@ def predict(image, type='h', threshold=0.5):
         raise ValueError(f"Invalid model type: {type}")
 
     filename = create_unique_filename()
+    
+    if os.path.exists("./temp") == False:
+        os.mkdir("./temp")
     
     # Save the image
     image.save(f"./temp/{filename}")

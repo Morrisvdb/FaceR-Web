@@ -5,8 +5,17 @@
 {% block content %}
     <head>
         <a href="{{ url_for('qr_setup') }}" class="button">Change Code</a>
+        <div class="fancy-textbox">
+            <input type="text" name="input" id="input" placeholder="Password">
+        </div>
     </head>
     <div class="container">
-        <img src="{{ qr }}" alt="QR" class="img-fluid" id="qr">
+        <img src="{{ qr }}" alt="QR" class="img-fluid" id="qr"> 
+        
     </div>
+    <div class="container">
+        <h1>Password:&nbsp;</h1> <h1 id="output"></h1>
+    </div>
+    
+    <script src="{{ url_for('static', filename='echoToBig.js') }}"></script>
 {% endblock content %}

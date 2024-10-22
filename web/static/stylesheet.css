@@ -70,6 +70,16 @@ body.dark-mode {
 
 }
 
+.fancy-textbox input[type=text] {
+    width: 20%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    margin-top: 1.5%;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
 .center {
     display: flex;
     justify-content: center;
@@ -213,6 +223,9 @@ body.dark-mode {
     width: 40%;
     height: auto;
     object-fit: cover; /* Ensure the video covers the container while maintaining aspect ratio */
+    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
 }
 
 #qr {
