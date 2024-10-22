@@ -18,6 +18,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let confidenceValue = 50;
     let isProcessing = false;
 
+    // Maybe fix this for apple????
+    video.setAttribute('autoplay', '');
+    video.setAttribute('muted', '');
+    video.setAttribute('playsinline', '');
+
     // Request access to the user's webcam
     navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
         .then(stream => {

@@ -4,7 +4,7 @@ from datetime import timedelta
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+load_dotenv('.env')
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)
