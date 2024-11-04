@@ -7,6 +7,7 @@ pyvenv.cfg
 /Models
 /share
 /temp
+/var
 web/__pycache__
 web/ssl
 database.db
