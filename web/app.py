@@ -131,7 +131,7 @@ def video():
 
 @app.route('/qr')
 def qr():
-    if os.path.exists('web/static/qr.png'):
+    if os.path.exists('./static/qr.png'):
         return render_template('qr.html', qr='static/qr.png')
     return redirect(url_for('qr_setup'))        
 
@@ -143,7 +143,7 @@ def qr_setup():
             url = request.form['url']
             qr = segno.make(url)
             qr.save(
-                'web/static/qr.png',
+                './static/qr.png',
                 scale=15,
                 border=1,
                 )
