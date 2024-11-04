@@ -223,9 +223,9 @@ body.dark-mode {
     width: 40%;
     height: auto;
     object-fit: cover; /* Ensure the video covers the container while maintaining aspect ratio */
-    transform: rotateY(180deg);
+    /* transform: rotateY(180deg);
     -webkit-transform: rotateY(180deg);
-    -moz-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg); */
 }
 
 #qr {

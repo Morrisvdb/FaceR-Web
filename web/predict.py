@@ -23,10 +23,11 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f"Using device: {device}")
 
 # NOTE: YOLOv11 is slightly less accurate but faster than YOLOv8. It's a drop in replacement
-modell_path = './Models/YOLOv11/yolo11n.pt'  # Path to your YOLOv8 model
+modell_path = '../Models/YOLOv11/yolo11n.pt'  # Path to your YOLOv8 model
 modell_url = 'https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11n.pt'
-modelh_path = './Models/YOLOv8/yolov8x.pt'  # Path to your YOLOv8 model
+modelh_path = '../Models/YOLOv8/yolov8x.pt'  # Path to your YOLOv8 model
 modelh_url = 'https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8x.pt'
+temp_dir_path = '../temp'
 
 modell = load_yolo_model(modell_path, modell_url)
 modelh = load_yolo_model(modelh_path, modelh_url)
@@ -112,21 +113,21 @@ def predict(image, type='h', threshold=0.5):
 
     filename = create_unique_filename()
     
-    if os.path.exists("./temp") == False:
-        os.mkdir("./temp")
+    if os.path.exists(f"{temp_dir_path}") == False:
+        os.mkdir(f"{temp_dir_path}")
     
     # Save the image
-    image.save(f"./temp/{filename}")
+    image.save(f"{temp_dir_path}/{filename}")
     
     # Read the image
-    image = cv2.imread(f"./temp/{filename}")
+    image = cv2.imread(f"{temp_dir_path}/{filename}")
     # image = cv2.flip(image, 1)
     
     # Classify objects
     image, results = classify_objects(image=image, model=model, confidence_threshold=threshold)
     
     # Remove the image
-    os.remove(f"./temp/{filename}")
+    os.remove(f"{temp_dir_path}/{filename}")
     
     ttime = time.time() - stime
     return image, results, ttime

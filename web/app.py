@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from predict import predict, get_class_names
 from datetime import timedelta
 import random, cv2, base64
-from __init__ import app, db
+from __init__ import app, db, cache
 from models import Contestant, FoundObjects
 import segno
 import os
@@ -23,8 +23,9 @@ def index():
     return redirect(url_for('home'))
 
 @app.route('/home')
+@cache.cached(timeout=60)
 def home():
-    with open('web/splashtexts.txt', 'r') as file:
+    with open('./splashtexts.txt', 'r') as file:
         lines = file.readlines()
         splash_text = random.choice(lines).strip()
     return render_template('home.html', splash_text=splash_text)
@@ -120,6 +121,7 @@ def image():
     return render_template('image.html')  
 
 @app.route('/video')
+@cache.cached(timeout=60)
 def video():
     if not session.get('authenticated'):
         return redirect(url_for('login', next_url=url_for('video').split('/')[-1]))
@@ -232,5 +234,5 @@ def competition():
 
 # Run the Flask app
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=5000, ssl_context='adhoc')
+    app.run(debug=False, host='0.0.0.0', port=5000, ssl_context='adhoc')
     # app.run(debug=True, host='0.0.0.0', ssl_context=('web/ssl/cert.pem', 'web/ssl/key.pem'), port=5000)
