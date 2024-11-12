@@ -30,6 +30,10 @@ def home():
         splash_text = random.choice(lines).strip()
     return render_template('home.html', splash_text=splash_text)
 
+@app.route('/process')
+def process():
+    return render_template('process.html')
+
 @app.route('/login/<next_url>', methods=['GET', 'POST'])
 def login(next_url):
     if request.method == 'POST':
@@ -234,5 +238,5 @@ def competition():
 
 # Run the Flask app
 if __name__ == "__main__":
-    app.run(debug=False, host='0.0.0.0', port=5000, ssl_context='adhoc')
+    app.run(debug=True, host='0.0.0.0', port=5001, ssl_context='adhoc')
     # app.run(debug=True, host='0.0.0.0', ssl_context=('web/ssl/cert.pem', 'web/ssl/key.pem'), port=5000)

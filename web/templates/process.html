@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Competition{% endblock title %}
+
+{% block content %}
+
+    <div class="processParagraph">
+        <div class="b">
+            <div>
+                <img src="{{ url_for('static', filename='visual.avif') }}" alt="" id="pimage" class="rightImage">
+            </div>
+            <h1>Het Process</h1>
+            <p>
+                <h1>Image Recognition AI: Een Inleiding</h1>
+    
+                <p>Beeldherkenning is een tak van kunstmatige intelligentie die zich richt op het herkennen en classificeren van objecten in afbeeldingen. Het ontwikkelen van een image recognition AI vereist verschillende stappen, van het verzamelen van gegevens tot het trainen van een model.</p>
+                
+                <h2>1. Gegevensverzameling</h2>
+                
+                <p>De eerste stap in het ontwikkelen van een image recognition AI is het verzamelen van een dataset. Deze dataset moet afbeeldingen bevatten die representatief zijn voor de objecten die je wilt herkennen. Er zijn verschillende bronnen waar je datasets kunt vinden, zoals:</p>
+                <ul>
+                    <li>Open source datasets (bijvoorbeeld ImageNet, CIFAR-10)</li>
+                    <li>Zelf gemaakte datasets door afbeeldingen te verzamelen en te labelen</li>
+                    <li>Web scraping om afbeeldingen van het internet te verzamelen</li>
+                </ul>
+                
+                <h2>2. Voorverwerking van Gegevens</h2>
+                
+                <p>Nadat je de gegevens hebt verzameld, is het belangrijk om ze voor te bereiden voor gebruik in je model. Dit omvat stappen zoals:</p>
+                <ul>
+                    <li>Afbeeldingen schalen naar een consistente grootte</li>
+                    <li>Normaliseren van pixelwaarden</li>
+                    <li>Data-augmentatie om de variëteit in je dataset te vergroten</li>
+                </ul>
+                
+                <h2>3. Modelselectie</h2>
+                
+                <p>Kies een geschikt model voor beeldherkenning. Er zijn verschillende populaire modellen, zoals:</p>
+                <ul>
+                    <li>Convolutionele neurale netwerken (CNNs)</li>
+                    <li>Transfer learning met voorgetrainde modellen zoals VGG16, ResNet of Inception</li>
+                </ul>
+                
+                <h2>4. Training van het Model</h2>
+                
+                <p>Tijdens de training voer je je dataset in het model in en pas je de gewichten aan op basis van de fout die het model maakt. Dit proces kan veel rekenkracht vereisen en kan worden versneld met behulp van GPU's.</p>
+                
+                <h2>5. Evaluatie en Optimalisatie</h2>
+                
+                <p>Na de training is het belangrijk om de prestaties van je model te evalueren met een aparte testdataset. Je kunt verschillende statistieken gebruiken, zoals nauwkeurigheid, precisie en recall, om de effectiviteit van je model te meten. Op basis van deze evaluatie kun je verdere optimalisaties aanbrengen.</p>
+                
+                <h2>6. Implementatie</h2>
+                
+                <p>Als je tevreden bent met de prestaties van je model, is de laatste stap om het te implementeren in een applicatie. Dit kan een webapplicatie, mobiele app of een embedded systeem zijn, afhankelijk van de gebruikstoepassing.</p>
+
+                <h2>Conclusie</h2>
+                
+                <p>Het maken van een image recognition AI is een uitdagend maar lonend proces. Door aandacht te besteden aan elke stap, van gegevensverzameling tot implementatie, kun je een krachtig model ontwikkelen dat in staat is om objecten in afbeeldingen nauwkeurig te herkennen.</p>
+
+            </p>
+        </div>
+    </div>
+{% endblock content %}
