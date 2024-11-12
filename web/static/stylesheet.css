@@ -252,6 +252,12 @@ body.dark-mode {
     font-size: large;
 }
 
+.processParagraph footer {
+    font-size: small;
+    font-style: italic;
+    font-weight: bold;
+}
+
 .rightImage {
     /* float: right; */
     width: 45%;
